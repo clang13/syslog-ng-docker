@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "syslog-ng.labels" . | nindent 4 }}
 spec:
-  {{- if eq .Values.service.type "externalip" }}
-  
+  {{- if or (eq .Values.service.type "externalip") (eq .Values.service.type "loadbalancer") }}
+
   {{- with .Values.service.externalIPs }}
   externalIPs:
     {{- toYaml . | nindent 3 }}
@@ -22,6 +22,6 @@ spec:
     - name: tcp-port
       port: 601
       targetPort: 601
-      protocol: TCP 
+      protocol: TCP
   selector:
     {{- include "syslog-ng.selectorLabels" . | nindent 4 }}
